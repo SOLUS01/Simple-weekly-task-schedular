@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Weekly Planner</title>
+
+<link rel="stylesheet" href="/static/style.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="topbar">
+
+<h1>Weekly Planner</h1>
+
+<button onclick="toggleTheme()">🌗 Theme</button>
+
+</div>
+
+<div class="container">
+
+<div class="left-panel">
+
+<!-- Animated Progress Graph -->
+
+<div class="graph-container">
+
+<svg width="200" height="200">
+
+<circle
+cx="100"
+cy="100"
+r="80"
+stroke="#D8CFBC"
+stroke-width="15"
+fill="none"
+/>
+
+<circle
+id="progressCircle"
+cx="100"
+cy="100"
+r="80"
+stroke="#565449"
+stroke-width="15"
+fill="none"
+stroke-dasharray="502"
+stroke-dashoffset="502"
+/>
+
+</svg>
+
+<div class="graph-text">
+
+{{progress}}%
+
+</div>
+
+</div>
+
+<div class="task-form">
+
+<form method="POST" action="/add">
+
+<input name="title" placeholder="New task">
+
+<select name="day">
+
+<option>Monday</option>
+<option>Tuesday</option>
+<option>Wednesday</option>
+<option>Thursday</option>
+<option>Friday</option>
+<option>Saturday</option>
+<option>Sunday</option>
+
+</select>
+
+<button>Add</button>
+
+</form>
+
+</div>
+
+</div>
+
+<div class="calendar">
+
+{% for day,items in week.items() %}
+
+<div class="day">
+
+<h3>{{day}}</h3>
+
+<ul>
+
+{% for task in items %}
+
+<li>
+
+<a href="/toggle/{{task.title}}">
+
+{% if task.done %}
+✔ {{task.title}}
+{% else %}
+○ {{task.title}}
+{% endif %}
+
+</a>
+
+</li>
+
+{% endfor %}
+
+</ul>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+<script src="/static/script.js"></script>
+
+<script>
+
+animateProgress(Number("{{progress}}"))
+
+</script>
+
+</body>
+</html>
